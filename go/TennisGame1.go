@@ -34,6 +34,7 @@ func (game *tennisGame1) GetScore() string {
 	} else if game.m_score1 >= 4 || game.m_score2 >= 4 {
 		score = onPotentialWinner(game)
 	} else {
+		score = wtfunc(game)
 	}
 	return score
 }
