@@ -13,7 +13,8 @@ type tennisGame2 struct {
 func TennisGame2(player1Name string, player2Name string) TennisGame {
 	game := &tennisGame2{
 		player1Name: player1Name,
-		player2Name: player2Name}
+		player2Name: player2Name,
+	}
 
 	return game
 }
@@ -114,19 +115,15 @@ func (game *tennisGame2) GetScore() string {
 }
 
 func (game *tennisGame2) SetP1Score(number int) {
-
 	for i := 0; i < number; i++ {
 		game.P1Score()
 	}
-
 }
 
 func (game *tennisGame2) SetP2Score(number int) {
-
 	for i := 0; i < number; i++ {
 		game.P2Score()
 	}
-
 }
 
 func (game *tennisGame2) P1Score() {

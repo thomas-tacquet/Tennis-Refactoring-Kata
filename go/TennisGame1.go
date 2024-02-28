@@ -29,28 +29,11 @@ func (game *tennisGame1) WonPoint(playerName string) {
 func (game *tennisGame1) GetScore() string {
 	score := ""
 	tempScore := 0
+
 	if game.m_score1 == game.m_score2 {
-		switch game.m_score1 {
-		case 0:
-			score = "Love-All"
-		case 1:
-			score = "Fifteen-All"
-		case 2:
-			score = "Thirty-All"
-		default:
-			score = "Deuce"
-		}
+		onEqualScore(game, score)
 	} else if game.m_score1 >= 4 || game.m_score2 >= 4 {
-		minusResult := game.m_score1 - game.m_score2
-		if minusResult == 1 {
-			score = "Advantage player1"
-		} else if minusResult == -1 {
-			score = "Advantage player2"
-		} else if minusResult >= 2 {
-			score = "Win for player1"
-		} else {
-			score = "Win for player2"
-		}
+		onPotentialWinner(game, score)
 	} else {
 		for i := 1; i < 3; i++ {
 			if i == 1 {
@@ -72,4 +55,30 @@ func (game *tennisGame1) GetScore() string {
 		}
 	}
 	return score
+}
+
+func onPotentialWinner(game *tennisGame1, score string) {
+	minusResult := game.m_score1 - game.m_score2
+	if minusResult == 1 {
+		score = "Advantage player1"
+	} else if minusResult == -1 {
+		score = "Advantage player2"
+	} else if minusResult >= 2 {
+		score = "Win for player1"
+	} else {
+		score = "Win for player2"
+	}
+}
+
+func onEqualScore(game *tennisGame1, score string) {
+	switch game.m_score1 {
+	case 0:
+		score = "Love-All"
+	case 1:
+		score = "Fifteen-All"
+	case 2:
+		score = "Thirty-All"
+	default:
+		score = "Deuce"
+	}
 }

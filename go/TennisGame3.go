@@ -10,7 +10,8 @@ type tennisGame3 struct {
 func TennisGame3(p1N string, p2N string) TennisGame {
 	game := &tennisGame3{
 		p1N: p1N,
-		p2N: p2N}
+		p2N: p2N,
+	}
 
 	return game
 }
