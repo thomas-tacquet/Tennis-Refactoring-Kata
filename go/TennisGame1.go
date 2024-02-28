@@ -37,11 +37,11 @@ func (game *tennisGame1) WonPoint(playerName string) {
 
 func (game *tennisGame1) GetScore() string {
 	if game.p1.score == game.p2.score {
-		return onEqualScore(game)
+		return game.p1.score.StringOnEquality()
 	}
 
 	if game.p1.score.IsMax() || game.p2.score.IsMax() {
-		return onPotentialWinner(game)
+		return onPotentialWinner(game.p1.score, game.p2.score)
 	}
 
 	return game.wtfunc()
@@ -50,6 +50,15 @@ func (game *tennisGame1) GetScore() string {
 type Score int
 
 const MaxRoundScore Score = 4
+
+func (s Score) StringOnEquality() string {
+	switch s {
+	case 0, 1, 2:
+		return s.String() + "-All"
+	default:
+		return "Deuce"
+	}
+}
 
 func (s Score) String() string {
 	switch s {
@@ -75,8 +84,8 @@ func (game tennisGame1) wtfunc() string {
 	return game.p1.score.String() + "-" + game.p2.score.String()
 }
 
-func onPotentialWinner(game *tennisGame1) string {
-	minusResult := game.p1.score - game.p2.score
+func onPotentialWinner(scoreP1, scoreP2 Score) string {
+	minusResult := scoreP1 - scoreP2
 
 	switch {
 	case minusResult == 1:
@@ -87,18 +96,5 @@ func onPotentialWinner(game *tennisGame1) string {
 		return "Win for player1"
 	default:
 		return "Win for player2"
-	}
-}
-
-func onEqualScore(game *tennisGame1) string {
-	switch game.p1.score {
-	case 0:
-		return game.p1.score.String() + "-All"
-	case 1:
-		return game.p1.score.String() + "-All"
-	case 2:
-		return game.p1.score.String() + "-All"
-	default:
-		return "Deuce"
 	}
 }
