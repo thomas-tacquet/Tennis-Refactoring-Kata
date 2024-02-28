@@ -9,13 +9,11 @@ type tennisGame1 struct {
 }
 
 // 2 string
-func TennisGame1(player1Name string, player2Name string) TennisGame {
-	game := &tennisGame1{
+func NewTennisGame1(player1Name string, player2Name string) TennisGame {
+	return &tennisGame1{
 		player1Name: player1Name,
 		player2Name: player2Name,
 	}
-
-	return game
 }
 
 func (game *tennisGame1) WonPoint(playerName string) {
@@ -34,7 +32,7 @@ func (game *tennisGame1) GetScore() string {
 	} else if game.m_score1 >= 4 || game.m_score2 >= 4 {
 		score = onPotentialWinner(game)
 	} else {
-		score = wtfunc(game)
+		score = game.wtfunc()
 	}
 	return score
 }
@@ -55,33 +53,24 @@ func numToScoreString(score int) string {
 	}
 }
 
-func wtfunc(game *tennisGame1) string {
-	score := ""
-	tempScore := 0
+func (game tennisGame1) wtfunc() string {
+	player1Score := numToScoreString(game.m_score1)
+	player2Score := numToScoreString(game.m_score2)
 
-	for i := 1; i < 3; i++ {
-		//
-		if i == 1 {
-			tempScore = game.m_score1
-		} else {
-			score += "-"
-			tempScore = game.m_score2
-		}
-		//
-		score += numToScoreString(tempScore)
-	}
-	return score
+	return player1Score + "-" + player2Score
 }
 
 func onPotentialWinner(game *tennisGame1) string {
 	minusResult := game.m_score1 - game.m_score2
-	if minusResult == 1 {
+
+	switch {
+	case minusResult == 1:
 		return "Advantage player1"
-	} else if minusResult == -1 {
+	case minusResult == -1:
 		return "Advantage player2"
-	} else if minusResult >= 2 {
+	case minusResult >= 2:
 		return "Win for player1"
-	} else {
+	default:
 		return "Win for player2"
 	}
 }

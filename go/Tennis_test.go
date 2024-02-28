@@ -76,7 +76,9 @@ func runSuiteOnGame(t *testing.T, factory func(player1Name string, player2Name s
 
 // t.parallel
 func TestTennisGame1(t *testing.T) {
-	runSuiteOnGame(t, func(player1Name string, player2Name string) TennisGame { return TennisGame1(player1Name, player2Name) })
+	runSuiteOnGame(t, func(player1Name string, player2Name string) TennisGame {
+		return NewTennisGame1(player1Name, player2Name)
+	})
 }
 
 func TestTennisGame2(t *testing.T) {
