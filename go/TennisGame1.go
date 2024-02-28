@@ -28,57 +28,72 @@ func (game *tennisGame1) WonPoint(playerName string) {
 
 func (game *tennisGame1) GetScore() string {
 	score := ""
-	tempScore := 0
 
 	if game.m_score1 == game.m_score2 {
-		onEqualScore(game, score)
+		score = onEqualScore(game)
 	} else if game.m_score1 >= 4 || game.m_score2 >= 4 {
-		onPotentialWinner(game, score)
+		score = onPotentialWinner(game)
 	} else {
-		for i := 1; i < 3; i++ {
-			if i == 1 {
-				tempScore = game.m_score1
-			} else {
-				score += "-"
-				tempScore = game.m_score2
-			}
-			switch tempScore {
-			case 0:
-				score += "Love"
-			case 1:
-				score += "Fifteen"
-			case 2:
-				score += "Thirty"
-			case 3:
-				score += "Forty"
-			}
-		}
 	}
 	return score
 }
 
-func onPotentialWinner(game *tennisGame1, score string) {
-	minusResult := game.m_score1 - game.m_score2
-	if minusResult == 1 {
-		score = "Advantage player1"
-	} else if minusResult == -1 {
-		score = "Advantage player2"
-	} else if minusResult >= 2 {
-		score = "Win for player1"
-	} else {
-		score = "Win for player2"
+func numToScoreString(score int) string {
+	switch score {
+	case 0:
+		return "Love"
+	case 1:
+		return "Fifteen"
+	case 2:
+		return "Thirty"
+	case 3:
+		return "Forty"
+	default:
+		panic("ooups")
+		return "FAIL"
 	}
 }
 
-func onEqualScore(game *tennisGame1, score string) {
+func wtfunc(game *tennisGame1) string {
+	score := ""
+	tempScore := 0
+
+	for i := 1; i < 3; i++ {
+		//
+		if i == 1 {
+			tempScore = game.m_score1
+		} else {
+			score += "-"
+			tempScore = game.m_score2
+		}
+		//
+		score += numToScoreString(tempScore)
+	}
+	return score
+}
+
+func onPotentialWinner(game *tennisGame1) string {
+	minusResult := game.m_score1 - game.m_score2
+	if minusResult == 1 {
+		return "Advantage player1"
+	} else if minusResult == -1 {
+		return "Advantage player2"
+	} else if minusResult >= 2 {
+		return "Win for player1"
+	} else {
+		return "Win for player2"
+	}
+}
+
+func onEqualScore(game *tennisGame1) string {
 	switch game.m_score1 {
 	case 0:
-		score = "Love-All"
+		return "Love-All"
 	case 1:
-		score = "Fifteen-All"
+		return "Fifteen-All"
 	case 2:
-		score = "Thirty-All"
+		return "Thirty-All"
 	default:
-		score = "Deuce"
+		return "Deuce"
 	}
 }
