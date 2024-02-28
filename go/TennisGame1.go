@@ -2,17 +2,13 @@ package tenniskata
 
 // score should be attached to a player
 type tennisGame1 struct {
-	// m_score1    int
-	// m_score2    int
-	// player1Name string
-	// player2Name string
 	p1 player
 	p2 player
 }
 
 type player struct {
 	name  string
-	score int
+	score Score
 }
 
 // 2 string
@@ -40,20 +36,23 @@ func (game *tennisGame1) WonPoint(playerName string) {
 }
 
 func (game *tennisGame1) GetScore() string {
-	score := ""
-
 	if game.p1.score == game.p2.score {
-		score = onEqualScore(game)
-	} else if game.p1.score >= 4 || game.p2.score >= 4 {
-		score = onPotentialWinner(game)
-	} else {
-		score = game.wtfunc()
+		return onEqualScore(game)
 	}
-	return score
+
+	if game.p1.score.IsMax() || game.p2.score.IsMax() {
+		return onPotentialWinner(game)
+	}
+
+	return game.wtfunc()
 }
 
-func numToScoreString(score int) string {
-	switch score {
+type Score int
+
+const MaxRoundScore Score = 4
+
+func (s Score) String() string {
+	switch s {
 	case 0:
 		return "Love"
 	case 1:
@@ -68,11 +67,12 @@ func numToScoreString(score int) string {
 	}
 }
 
-func (game tennisGame1) wtfunc() string {
-	player1Score := numToScoreString(game.p1.score)
-	player2Score := numToScoreString(game.p2.score)
+func (s Score) IsMax() bool {
+	return s >= MaxRoundScore
+}
 
-	return player1Score + "-" + player2Score
+func (game tennisGame1) wtfunc() string {
+	return game.p1.score.String() + "-" + game.p2.score.String()
 }
 
 func onPotentialWinner(game *tennisGame1) string {
@@ -93,11 +93,11 @@ func onPotentialWinner(game *tennisGame1) string {
 func onEqualScore(game *tennisGame1) string {
 	switch game.p1.score {
 	case 0:
-		return numToScoreString(game.p1.score) + "-All"
+		return game.p1.score.String() + "-All"
 	case 1:
-		return numToScoreString(game.p1.score) + "-All"
+		return game.p1.score.String() + "-All"
 	case 2:
-		return numToScoreString(game.p1.score) + "-All"
+		return game.p1.score.String() + "-All"
 	default:
 		return "Deuce"
 	}
