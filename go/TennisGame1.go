@@ -2,34 +2,49 @@ package tenniskata
 
 // score should be attached to a player
 type tennisGame1 struct {
-	m_score1    int
-	m_score2    int
-	player1Name string
-	player2Name string
+	// m_score1    int
+	// m_score2    int
+	// player1Name string
+	// player2Name string
+	p1 player
+	p2 player
+}
+
+type player struct {
+	name  string
+	score int
 }
 
 // 2 string
-func NewTennisGame1(player1Name string, player2Name string) TennisGame {
+func NewTennisGame1(player1Name, player2Name string) TennisGame {
 	return &tennisGame1{
-		player1Name: player1Name,
-		player2Name: player2Name,
+		p1: player{
+			name: player1Name,
+		},
+		p2: player{
+			name: player2Name,
+		},
 	}
+}
+
+func (p *player) IncrementScore() {
+	p.score++
 }
 
 func (game *tennisGame1) WonPoint(playerName string) {
 	if playerName == "player1" {
-		game.m_score1 += 1
+		game.p1.IncrementScore()
 	} else {
-		game.m_score2 += 1
+		game.p2.IncrementScore()
 	}
 }
 
 func (game *tennisGame1) GetScore() string {
 	score := ""
 
-	if game.m_score1 == game.m_score2 {
+	if game.p1.score == game.p2.score {
 		score = onEqualScore(game)
-	} else if game.m_score1 >= 4 || game.m_score2 >= 4 {
+	} else if game.p1.score >= 4 || game.p2.score >= 4 {
 		score = onPotentialWinner(game)
 	} else {
 		score = game.wtfunc()
@@ -54,14 +69,14 @@ func numToScoreString(score int) string {
 }
 
 func (game tennisGame1) wtfunc() string {
-	player1Score := numToScoreString(game.m_score1)
-	player2Score := numToScoreString(game.m_score2)
+	player1Score := numToScoreString(game.p1.score)
+	player2Score := numToScoreString(game.p2.score)
 
 	return player1Score + "-" + player2Score
 }
 
 func onPotentialWinner(game *tennisGame1) string {
-	minusResult := game.m_score1 - game.m_score2
+	minusResult := game.p1.score - game.p2.score
 
 	switch {
 	case minusResult == 1:
@@ -76,13 +91,13 @@ func onPotentialWinner(game *tennisGame1) string {
 }
 
 func onEqualScore(game *tennisGame1) string {
-	switch game.m_score1 {
+	switch game.p1.score {
 	case 0:
-		return "Love-All"
+		return numToScoreString(game.p1.score) + "-All"
 	case 1:
-		return "Fifteen-All"
+		return numToScoreString(game.p1.score) + "-All"
 	case 2:
-		return "Thirty-All"
+		return numToScoreString(game.p1.score) + "-All"
 	default:
 		return "Deuce"
 	}
