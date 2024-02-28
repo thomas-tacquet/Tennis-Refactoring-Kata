@@ -1,5 +1,6 @@
 package tenniskata
 
+// score should be attached to a player
 type tennisGame1 struct {
 	m_score1    int
 	m_score2    int
@@ -7,10 +8,12 @@ type tennisGame1 struct {
 	player2Name string
 }
 
+// 2 string
 func TennisGame1(player1Name string, player2Name string) TennisGame {
 	game := &tennisGame1{
 		player1Name: player1Name,
-		player2Name: player2Name}
+		player2Name: player2Name,
+	}
 
 	return game
 }

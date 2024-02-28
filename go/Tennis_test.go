@@ -49,7 +49,8 @@ var testData = []testDataSample{
 	{6, 4, "Win for player1"},
 	{4, 6, "Win for player2"},
 	{16, 14, "Win for player1"},
-	{14, 16, "Win for player2"}}
+	{14, 16, "Win for player2"},
+}
 
 func runSuiteOnGame(t *testing.T, factory func(player1Name string, player2Name string) TennisGame) {
 	for _, sample := range testData {
@@ -73,6 +74,7 @@ func runSuiteOnGame(t *testing.T, factory func(player1Name string, player2Name s
 	}
 }
 
+// t.parallel
 func TestTennisGame1(t *testing.T) {
 	runSuiteOnGame(t, func(player1Name string, player2Name string) TennisGame { return TennisGame1(player1Name, player2Name) })
 }
